@@ -10,14 +10,14 @@ import imp
 import pandas as pd
 
 def read_data():
-  train_data = pd.read_csv('../volcanoes/train_images.csv', header=None);
-  train_labels = pd.read_csv('../volcanoes/train_labels.csv');
+  train_data = pd.read_csv('../../data/volcanoes/train_images.csv', header=None);
+  train_labels = pd.read_csv('../../data/volcanoes/train_labels.csv');
   train_labels_onehot = np.zeros((train_labels.shape[0], 2));
   train_labels_onehot[:,0] = (train_labels['Volcano?'].values == 0)*1;
   train_labels_onehot[:,1] = (train_labels['Volcano?'].values == 1)*1;
 
-  test_data = pd.read_csv('../volcanoes/test_images.csv', header=None);
-  test_labels = pd.read_csv('../volcanoes/test_labels.csv');
+  test_data = pd.read_csv('../../data/volcanoes/test_images.csv', header=None);
+  test_labels = pd.read_csv('../../data/volcanoes/test_labels.csv');
   test_labels_onehot = np.zeros((test_labels.shape[0], 2));
   test_labels_onehot[:,0] = (test_labels['Volcano?'].values == 0)*1;
   test_labels_onehot[:,1] = (test_labels['Volcano?'].values == 1)*1;
