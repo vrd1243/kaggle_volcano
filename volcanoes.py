@@ -19,12 +19,12 @@ Y = tf.placeholder(tf.float32, [None, num_classes], 'Y_placeholder')
 
 learning_rate = tf.placeholder(tf.float32)
 
-weights, biases, regularizer = get_weights();
+weights, biases, regularizer = get_weights(seed=10);
 
 logits = conv_net(X, weights, biases, 1, True)
 prediction = tf.nn.softmax(logits)
 
-#entropy = tf.nn.weighted_cross_entropy_with_logits(logits=prediction, targets=Y, pos_weight=1)
+#entropy = tf.nn.weighted_cross_entropy_with_logits(logits=prediction, targets=Y, pos_weight=10)
 entropy = tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=Y)
 loss_op = tf.reduce_sum(entropy)
 
@@ -33,7 +33,7 @@ diff_sq = tf.multiply((logits - Y),(logits - Y))
 
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
 #optimizer = tf.train.RMSPropOptimizer(learning_rate=learning_rate);
-train_op = optimizer.minimize(loss_op + beta*get_regularization_error());
+train_op = optimizer.minimize(loss_op + beta*get_regularization_error(regularizer));
 
 correct_pred = tf.equal(tf.argmax(prediction, 1), tf.argmax(Y, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
@@ -73,8 +73,8 @@ def run_epoch(sess, num_steps, initial_rate, anneal=False):
                                                 Y: VObj.test_labels_onehot});
         test_accuracy.append(acc);
         test_tss.append(tss_score);
-        print(l, acc, tss_score);
-        print(tps / (tps + fns), fns / (tps + fns), fps / (fps + tns), tns / (fps + tns));
+        print(step, l, acc, tss_score);
+        #print(tps / (tps + fns), fns / (tps + fns), fps / (fps + tns), tns / (fps + tns));
               
     training_loss = np.array(training_loss); 
     

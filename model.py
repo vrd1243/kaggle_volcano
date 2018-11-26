@@ -40,30 +40,31 @@ def conv_net(x, weights, biases, dropout, is_training=False):
     return out
 
 # In[7]:
-def get_regularization_error():
+def get_regularization_error(regularizer):
     return (regularizer['wd1'] + 0.1*(regularizer['wc1'] + regularizer['wc2']))
 
+
+def get_weights(seed):
+
 # Store layers weight & bias
-weights = {
-    'wc1': tf.Variable(tf.random_normal([3, 3, 1, 1])),
-    'wc2': tf.Variable(tf.random_normal([3, 3, 1, 1])),
-    'wd1': tf.Variable(tf.random_normal([28*28, 256])),
-    'out': tf.Variable(tf.random_normal([256, num_classes]))
-}
+    weights = {
+        'wc1': tf.Variable(tf.random_normal([3, 3, 1, 1], seed=seed)),
+        'wc2': tf.Variable(tf.random_normal([3, 3, 1, 1], seed=seed)),
+        'wd1': tf.Variable(tf.random_normal([28*28, 256], seed=seed)),
+        'out': tf.Variable(tf.random_normal([256, num_classes], seed=seed))
+    }
 
-regularizer = {
-    'wc1' : tf.nn.l2_loss(weights['wc1']),
-    'wc2' : tf.nn.l2_loss(weights['wc2']),
-    'wd1' : tf.nn.l2_loss(weights['wd1'])
+    regularizer = {
+        'wc1' : tf.nn.l2_loss(weights['wc1']),
+        'wc2' : tf.nn.l2_loss(weights['wc2']),
+        'wd1' : tf.nn.l2_loss(weights['wd1'])
+    }
 
-}
+    biases = {
+        'bc1': tf.Variable(tf.random_normal([1], seed=seed)),
+        'bc2': tf.Variable(tf.random_normal([1], seed=seed)),
+        'bd1': tf.Variable(tf.random_normal([1], seed=seed)),
+        'out': tf.Variable(tf.random_normal([1], seed=seed))
+    }
 
-biases = {
-    'bc1': tf.Variable(tf.random_normal([1])),
-    'bc2': tf.Variable(tf.random_normal([1])),
-    'bd1': tf.Variable(tf.random_normal([1])),
-    'out': tf.Variable(tf.random_normal([1]))
-}
-
-def get_weights():
     return [weights, biases, regularizer];
