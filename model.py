@@ -17,8 +17,9 @@ def maxpool2d(x, k=2):
 
 # Create model
 def conv_net(x, weights, biases, dropout, is_training=False):
-    
+ 
     x = tf.reshape(x, shape=[-1, 110, 110, 1], name='reshape_x')
+    x = tf.contrib.layers.layer_norm(x);
     
     conv1 = conv2d(x, weights['wc1'], biases['bc1'], name='conv1')
     conv1 = tf.nn.relu(conv1)
@@ -40,7 +41,7 @@ def conv_net(x, weights, biases, dropout, is_training=False):
 
 # In[7]:
 def get_regularization_error():
-    return (regularizer['wd1'] + 0.01*(regularizer['wc1'] + regularizer['wc2']))
+    return (regularizer['wd1'] + 0.1*(regularizer['wc1'] + regularizer['wc2']))
 
 # Store layers weight & bias
 weights = {
